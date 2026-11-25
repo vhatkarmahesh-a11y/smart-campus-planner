@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Campus Attendance &amp; Study Planner</title>
+  <style>
+    * { box-sizing: border-box; font-family: Arial, sans-serif; }
+    body { margin: 0; background: #f4f6f9; color: #1f2937; }
+    header { background: #1e3a8a; color: #ffffff; padding: 20px 32px; }
+    header h1 { margin: 0 0 6px; font-size: 24px; }
+    header p { margin: 0; font-size: 14px; color: #dbeafe; }
+    main { max-width: 960px; margin: 24px auto; padding: 0 16px; display: grid; gap: 20px; }
+    .card { background: #ffffff; border-radius: 8px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    .card h2 { margin-top: 0; font-size: 18px; color: #1e3a8a; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { text-align: left; padding: 10px; border-bottom: 1px solid #e5e7eb; font-size: 14px; }
+    th { background: #f8fafc; }
+    button { background: #2563eb; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
+    button:hover { background: #1d4ed8; }
+    .status-present { color: #15803d; font-weight: bold; }
+    .status-absent { color: #b91c1c; font-weight: bold; }
+    .form-row { display: flex; gap: 10px; margin-bottom: 12px; }
+    input { flex: 1; padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px; }
+    ul { padding-left: 20px; margin: 0; }
+    li { margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Smart Campus Attendance &amp; Study Planner</h1>
+    <p>TY BTech Information Technology &mdash; Team Alpha | Guide: Mahesh Vhatkar</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>1. Student Attendance Tracker</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>SRN</th>
+            <th>Student Name</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="attendance-body">
+          <tr>
+            <td>2024BIT001</td>
+            <td>Aarav Patil</td>
+            <td class="status-present">Present</td>
+            <td><button onclick="toggleStatus(this)">Toggle</button></td>
+          </tr>
+          <tr>
+            <td>2024BIT002</td>
+            <td>Sneha Kulkarni</td>
+            <td class="status-present">Present</td>
+            <td><button onclick="toggleStatus(this)">Toggle</button></td>
+          </tr>
+          <tr>
+            <td>2024BIT003</td>
+            <td>Rohan Deshmukh</td>
+            <td class="status-present">Present</td>
+            <td><button onclick="toggleStatus(this)">Toggle</button></td>
+          </tr>
+          <tr>
+            <td>2024BIT004</td>
+            <td>Priya Joshi</td>
+            <td class="status-present">Present</td>
+            <td><button onclick="toggleStatus(this)">Toggle</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>2. Study &amp; Project Milestone Board</h2>
+      <div class="form-row">
+        <input type="text" id="task-input" placeholder="Enter a new study topic or project milestone...">
+        <button onclick="addMilestone()">Add Milestone</button>
+      </div>
+      <ul id="milestone-list">
+        <li>Requirement Analysis &amp; Database Schema Design &mdash; <strong>Completed</strong></li>
+        <li>Frontend Dashboard &amp; Attendance Module &mdash; <strong>In Progress</strong></li>
+        <li>Faculty Evaluation &amp; Report Submission &mdash; <strong>Pending</strong></li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>3. Faculty Progress Review Summary</h2>
+      <p id="summary-text">Present Students: 4 / 4 | Total Milestones: 3</p>
+    </section>
+  </main>
+
+  <script>
+    function toggleStatus(button) {
+      const statusCell = button.parentElement.previousElementSibling;
+      if (statusCell.textContent === "Present") {
+        statusCell.textContent = "Absent";
+        statusCell.className = "status-absent";
+      } else {
+        statusCell.textContent = "Present";
+        statusCell.className = "status-present";
+      }
+      updateSummary();
+    }
+
+    function addMilestone() {
+      const input = document.getElementById("task-input");
+      const value = input.value.trim();
+      if (!value) return;
+      const li = document.createElement("li");
+      li.innerHTML = value + " &mdash; <strong>Pending</strong>";
+      document.getElementById("milestone-list").appendChild(li);
+      input.value = "";
+      updateSummary();
+    }
+
+    function updateSummary() {
+      const statuses = document.querySelectorAll("#attendance-body td:nth-child(3)");
+      let presentCount = 0;
+      statuses.forEach(cell => {
+        if (cell.textContent === "Present") presentCount++;
+      });
+      const totalMilestones = document.querySelectorAll("#milestone-list li").length;
+      document.getElementById("summary-text").textContent =
+        "Present Students: " + presentCount + " / " + statuses.length +
+        " | Total Milestones: " + totalMilestones;
+    }
+  </script>
+</body>
+</html>
